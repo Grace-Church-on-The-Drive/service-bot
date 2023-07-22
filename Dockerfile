@@ -27,11 +27,11 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
-RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
+RUN addgroup -g 65536 -S nodejs && adduser -S nodejs -u 1035
 
-COPY --link --chown=1001:1001 package.json ./
-COPY --from=prod-deps --link --chown=1001:1001 /app/node_modules ./node_modules
-COPY --from=builder --link --chown=1001:1001 /app/dist ./dist
+COPY --link --chown=1035:65536 package.json ./
+COPY --from=prod-deps --link --chown=1035:65536 /app/node_modules ./node_modules
+COPY --from=builder --link --chown=1035:65536 /app/dist ./dist
 
 USER nodejs
 
