@@ -20,7 +20,7 @@ audioRecording.map(async (file) => {
 })
 
 videoRecording.map(async (file) => {
-  const date = file.split(' ')[1].split('-').join('').split('.')[0].slice(2)
+  const date = file.split(' ')[1].split('-').map((t) => t.length === 1 ? `0${t}` : t).join('').split('.')[0].slice(2)
   if (!(/^\d{6}$/gm.test(date))) return
   if (!isSunday(date)) return
   await fs.mkdir(`./WORSHIP/Archive/${date}_Sunday Service/Recording`, { recursive: true })
