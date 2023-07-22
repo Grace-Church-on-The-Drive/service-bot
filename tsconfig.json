@@ -22,9 +22,6 @@
     "incremental": true,
     "baseUrl": ".",
     "newLine": "lf",
-    "types": [
-      "@cloudflare/workers-types"
-    ]
   },
   "exclude": [
     "node_modules",
@@ -36,7 +33,6 @@
   ],
   "ts-node": {
     "swc": true,
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "esm": true
   }
 }
