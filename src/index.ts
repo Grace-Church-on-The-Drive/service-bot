@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 
 const audioRecording = await fs.readdir('./WORSHIP/Recording/Audio')
 const videoRecording = await fs.readdir('./WORSHIP/Recording/Video')
-const powerpoint = await fs.readdir('./WORSHIP/Powerpoint/old')
+const powerpoint = await fs.readdir('./WORSHIP/Powerpoint/past')
 
 const isSunday = (dateString: string) => {
   const date = new Date()
@@ -32,5 +32,5 @@ powerpoint.map(async (file) => {
   if (!(/^\d{6}$/gm.test(date))) return
   if (!isSunday(date)) return
   await fs.mkdir(`./WORSHIP/Archive/${date}_Sunday Service`, { recursive: true })
-  await fs.rename(`./WORSHIP/Powerpoint/old/${file}`, `./WORSHIP/Archive/${date}_Sunday Service/${file}`)
+  await fs.rename(`./WORSHIP/Powerpoint/past/${file}`, `./WORSHIP/Archive/${date}_Sunday Service/${file}`)
 })
