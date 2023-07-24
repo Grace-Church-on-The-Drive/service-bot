@@ -1,5 +1,7 @@
 import http from 'node:http'
 import puppeteer from 'puppeteer'
+import Whatsapp from 'whatsapp-web.js'
+const { Client, LocalAuth, MessageMedia } = Whatsapp
 
 const server = http.createServer(async (req, res) => {
   if (!req.headers.authorization || req.headers.authorization !== process.env.HTTP_AUTHORIZATION) {
@@ -25,7 +27,6 @@ const server = http.createServer(async (req, res) => {
     }
   })
 
-
   await page.goto(process.env.AUDIO_SHEET!)
   await new Promise((resolve) => setTimeout(resolve, 1000))
   await page.screenshot({
@@ -38,7 +39,20 @@ const server = http.createServer(async (req, res) => {
   })
 
   await browser.close()
-  console.log('Screenshot has been captured successfully')
+
+  const client = new Client({
+    authStrategy: new LocalAuth()
+  })
+
+  client.on('ready', async () => {
+    await client.sendMessage(process.env.CHAT_ID!, MessageMedia.fromFilePath('./screenshots/rundown.jpg'), { caption: 'Auto send rundown' })
+    await client.sendMessage(process.env.CHAT_ID!, MessageMedia.fromFilePath('./screenshots/audio_sheet.jpg'), { caption: 'Auto send audio sheet' })
+    await new Promise((resolve) => setTimeout(resolve, 5000))
+    await client.destroy()
+    res.writeHead(200).end()
+  })
+
+  client.initialize()
 })
 
 server.listen(3000)
