@@ -1,6 +1,6 @@
 {
   "name": "service-bot",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "author": "Jonathan Ho <heiheiho000@gmail.com>",
   "license": "MIT",
   "main": "./dist/index.js",
