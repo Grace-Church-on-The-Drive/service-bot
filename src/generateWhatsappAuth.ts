@@ -1,17 +1,10 @@
-import qrcode from 'qrcode-terminal'
-import Whatsapp from 'whatsapp-web.js'
-const { Client, LocalAuth } = Whatsapp
+import venom from 'venom-bot'
 
-const client = new Client({
-  authStrategy: new LocalAuth()
-})
+const client = await venom
+  .create({
+    session: 'service-bot', //name of session
+    headless: 'new',
+    disableSpins: true
+  })
 
-client.on('qr', qr => {
-  qrcode.generate(qr, { small: true })
-})
-
-client.on('ready', async () => {
-  process.exit()
-})
-
-client.initialize()
+client.close()

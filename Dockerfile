@@ -19,6 +19,7 @@ WORKDIR /app
 COPY --link package.json yarn.lock .yarnrc.yml ./
 COPY --link .yarn .yarn
 RUN yarn workspaces focus --production
+RUN sed -i '121,122d' /app/node_modules/venom-bot/dist/controllers/browser.js
 
 FROM ghcr.io/puppeteer/puppeteer:20.9.0 AS runner
 WORKDIR /app
@@ -33,9 +34,9 @@ COPY --from=prod-deps --link --chown=1035:65536 /app/node_modules ./node_modules
 COPY --from=builder --link --chown=1035:65536 /app/dist ./dist
 RUN ln -s /home/pptruser/.cache /home/nodejs/.cache
 RUN ln -s /home/pptruser/node_modules /home/nodejs/node_modules
-RUN mkdir screenshots
 
 USER nodejs
+RUN mkdir screenshots
 
 EXPOSE 3000
 

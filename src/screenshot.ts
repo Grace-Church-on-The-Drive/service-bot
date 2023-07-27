@@ -1,7 +1,25 @@
 import http from 'node:http'
 import puppeteer from 'puppeteer'
-import Whatsapp from 'whatsapp-web.js'
-const { Client, LocalAuth, MessageMedia } = Whatsapp
+import venom from 'venom-bot'
+
+const client = await venom
+  .create({
+    session: 'service-bot', //name of session
+    headless: 'new',
+    disableSpins: true
+  })
+
+process.on('SIGINT', function () {
+  client.close()
+  browser.close()
+})
+
+const browser = await puppeteer.launch({
+  headless: 'new',
+  args: ['--no-sandbox', '--disable-setuid-sandbox']
+})
+const page = await browser.newPage()
+await page.setViewport({ width: 1920, height: 1080 })
 
 const server = http.createServer(async (req, res) => {
   if (!req.headers.authorization || req.headers.authorization !== process.env.HTTP_AUTHORIZATION) {
@@ -9,13 +27,7 @@ const server = http.createServer(async (req, res) => {
     return
   }
 
-  const browser = await puppeteer.launch({ headless: 'new' })
-  const page = await browser.newPage()
 
-  // Set the viewport's width and height
-  await page.setViewport({ width: 1920, height: 1080 })
-
-  // Open ScrapingBee's home page
   await page.goto(process.env.RUNDOWN_SHEET!)
   await new Promise((resolve) => setTimeout(resolve, 1000))
   await page.screenshot({
@@ -38,21 +50,22 @@ const server = http.createServer(async (req, res) => {
     }
   })
 
-  await browser.close()
+  await client
+    .sendImage(
+      process.env.CHAT_ID!,
+      './screenshots/rundown.jpg',
+      'rundown',
+      'Auto send rundown'
+    )
+  await client
+    .sendImage(
+      process.env.CHAT_ID!,
+      './screenshots/audio_sheet.jpg',
+      'audio sheet',
+      'Auto send audio sheet'
+    )
 
-  const client = new Client({
-    authStrategy: new LocalAuth()
-  })
-
-  client.on('ready', async () => {
-    await client.sendMessage(process.env.CHAT_ID!, MessageMedia.fromFilePath('./screenshots/rundown.jpg'), { caption: 'Auto send rundown' })
-    await client.sendMessage(process.env.CHAT_ID!, MessageMedia.fromFilePath('./screenshots/audio_sheet.jpg'), { caption: 'Auto send audio sheet' })
-    await new Promise((resolve) => setTimeout(resolve, 5000))
-    await client.destroy()
-    res.writeHead(200).end()
-  })
-
-  client.initialize()
+  res.writeHead(200).end()
 })
 
 server.listen(3000)
