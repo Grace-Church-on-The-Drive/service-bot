@@ -4,5 +4,6 @@ dotenv.config()
 import { CronJob } from 'cron'
 import { moveSundayService } from './moveSundayService.js'
 
-new CronJob('0 0 15 * *', moveSundayService, undefined, true)
-import './screenshot.js'
+new CronJob('0 15 * * *', moveSundayService, undefined, true)
+if (process.env.SCREENSHOT === 'true')
+  import('./screenshot.js')
