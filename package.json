@@ -1,22 +1,22 @@
 {
   "name": "service-bot",
-  "version": "1.1.19",
+  "version": "1.1.20",
   "author": "Jonathan Ho <heiheiho000@gmail.com>",
   "license": "MIT",
   "main": "./dist/index.js",
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "swc src --out-dir dist",
+    "build": "swc --out-dir dist src",
     "genAuth": "node ./dist/generateWhatsappAuth.js",
     "start": "node ./dist/index.js",
     "publish": "docker buildx build -t gracechurchonthedrive/service-bot:1.0.0 ."
   },
   "devDependencies": {
-    "@swc/cli": "^0.3.9",
+    "@swc/cli": "^0.2.3",
     "@swc/core": "^1.4.2",
     "@types/cron": "^2.4.0",
-    "@types/node": "^20.11.19",
+    "@types/node": "^20.11.20",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
     "eslint": "^8.56.0",
@@ -26,8 +26,6 @@
   "dependencies": {
     "cron": "^3.1.6",
     "dotenv": "^16.4.5",
-    "npm-check-updates": "^16.14.15",
-    "puppeteer": "^22.2.0",
-    "venom-bot": "^5.0.21"
+    "npm-check-updates": "^16.14.15"
   }
 }

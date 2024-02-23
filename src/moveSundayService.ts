@@ -14,7 +14,7 @@ export const moveSundayService = async () => {
   }
 
   audioRecording.map(async (file) => {
-    const date = file.slice(2, -4)
+    const date = file.split('.')[0]
     if (!isSunday(date)) return
     await fs.mkdir(`./WORSHIP/Archive/${date}_Sunday Service/Recording`, { recursive: true })
     await fs.rename(`./WORSHIP/Recording/Audio/${file}`, `./WORSHIP/Archive/${date}_Sunday Service/Recording/${file}`)

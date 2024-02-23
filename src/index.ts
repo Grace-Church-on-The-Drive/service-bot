@@ -3,7 +3,7 @@ dotenv.config()
 
 import { CronJob } from 'cron'
 import { moveSundayService } from './moveSundayService.js'
+import { photoCleaning } from './photoCleaning.js'
 
 new CronJob('0 15 * * *', moveSundayService, undefined, true)
-if (process.env.SCREENSHOT == 'true')
-  import('./screenshot.js')
+new CronJob('0 15 * * *', photoCleaning, undefined, true)
